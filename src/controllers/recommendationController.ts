@@ -3,13 +3,18 @@ import * as recommendationService from "../services/recommendationService";
 
 export async function recommendSong(req: Request, res: Response){
     try{
-        const { song, link } = req.body;
+    const { song, link } = req.body;
 
     if(!song || !link) {
         return res.sendStatus(400);
     }
 
+    if(!recommendationService.validateRecommendationData(song, link)){
+        return res.sendStatus(400);
+    }
+
     await recommendationService.recommendASong(song, link);
+    console.log(req.body);
     res.sendStatus(201);
     
     } catch (err) {

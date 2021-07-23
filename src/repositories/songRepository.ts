@@ -1,12 +1,10 @@
-import { recommendSong } from "../controllers/recommendationController";
 import connection from "../database/database";
-
 
 export async function getSongByName(name: string){
     const sql = `SELECT * FROM songs
                 WHERE name = $1`;
     const existingSong = await connection.query(sql, [name]);    
-    return existingSong.rows;  
+    return existingSong;  
 }
 
 export async function upvoteSong(name:string) {
@@ -17,6 +15,7 @@ export async function upvoteSong(name:string) {
 }
 
 export async function registerSong(song: string, link: string) {
-
-    
+    const sql = `INSERT INTO songs (name, link, score)
+                 VALUES ($1, $2, $3)`;
+    await connection.query(sql,[song, link, 1]);    
 }
