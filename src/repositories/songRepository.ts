@@ -35,21 +35,20 @@ export async function registerSong(song: string, link: string) {
 }
 
 export async function deleteSong(id: string) {
-    const sql = `DELETE from songs
-                 WHERE id = $1`;
+    const sql = `DELETE from songs WHERE id = $1`;
     await connection.query(sql,[id]);    
 }
 
 export async function getLowScoreSongs(){
-    const sql = `SELECT from songs
+    const sql = `SELECT * from songs 
                  WHERE score <= 10`;
     const lowScoreSongs = await connection.query(sql);
     return lowScoreSongs.rows;
 }
 
 export async function getTopSongs(){
-    const sql = `SELECT from songs
-    WHERE score > 10`;
+    const sql = `SELECT * from songs 
+                 WHERE score > 10`;
     const topSongs = await connection.query(sql);
     return topSongs.rows;
 }

@@ -65,9 +65,9 @@ export async function downvoteSong(req: Request, res: Response){
 export async function getRandomSong(req: Request, res: Response){
 
     try{
-        await recommendationService.getRandomSong();
+        const randomSong = await recommendationService.getRandomSong();
 
-        res.sendStatus(201);
+        res.send(randomSong).status(201);
         
         } catch (err) {
             console.log(err);

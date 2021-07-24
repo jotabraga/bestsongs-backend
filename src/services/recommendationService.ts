@@ -52,7 +52,7 @@ export async function decreaseSongScore(id: string) {
 
 export async function getRandomSong() {
     
-  const probability = Math.random()*(100 - 30) + 30;
+  let probability = Math.random()*(100 - 30) + 30;
 
   if( probability <= 30){
     const lowScoreSongs = await songRepository.getLowScoreSongs();
@@ -66,17 +66,17 @@ export async function getRandomSong() {
 
 function  pickRandomSong(songs: Song[]) {
 
-  const aleatoryNumber = Math.random()*songs.length - 1;
-  
+  const aleatoryNumber = Math.random()*songs.length;
+  const aleatoryIndex = Math.floor(aleatoryNumber);
+
   const drawnSong = {
-    id: songs[aleatoryNumber].id,
-    name: songs[aleatoryNumber].name,
-    youtubeLink: songs[aleatoryNumber].link,
-    score: songs[aleatoryNumber].score
+    id: songs[aleatoryIndex].id,
+    name: songs[aleatoryIndex].name,
+    youtubeLink: songs[aleatoryIndex].link,
+    score: songs[aleatoryIndex].score
   }
 
-  return drawnSong;  
-  
+  return drawnSong;    
 }
 
 
