@@ -3,19 +3,19 @@ import * as recommendationService from "../services/recommendationService";
 
 export async function recommendSong(req: Request, res: Response){
     try{
-    const { song, link } = req.body;
+        const { song, link } = req.body;
 
-    if(!song || !link) {
-        return res.sendStatus(400);
-    }
+        if(!song || !link) {
+            return res.sendStatus(400);
+        }
 
-    if(!recommendationService.validateRecommendationData(song, link)){
-        return res.sendStatus(400);
-    }
+        if(!recommendationService.validateRecommendationData(song, link)){
+            return res.sendStatus(400);
+        }
 
-    await recommendationService.recommendASong(song, link);
-    console.log(req.body);
-    res.sendStatus(201);
+        await recommendationService.recommendASong(song, link);
+
+        res.sendStatus(201);
     
     } catch (err) {
         console.log(err);
@@ -23,15 +23,56 @@ export async function recommendSong(req: Request, res: Response){
     }
 }
 
-export async function upvoteSong(){
+export async function upvoteSong(req: Request, res: Response){
+
+    try{
+        let { id } = req.params;  
+        
+        if(!id) {
+            return res.sendStatus(400);
+        }
+   
+        await recommendationService.increaseSongScore(id);
+
+        res.sendStatus(201);
+        
+        } catch (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
 
 }
 
-export async function downvoteSong(){
+export async function downvoteSong(req: Request, res: Response){
 
+    try{
+        const { id } = req.params;
+    
+        if(!id) {
+            return res.sendStatus(400);
+        }
+  
+        await recommendationService.decreaseSongScore(id);
+
+        res.sendStatus(201);
+        
+        } catch (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
 }
 
-export async function getRandomSong(){
+export async function getRandomSong(req: Request, res: Response){
+
+    try{
+        await recommendationService.getRandomSong();
+
+        res.sendStatus(201);
+        
+        } catch (err) {
+            console.log(err);
+            res.sendStatus(500);
+        }
 
 }
 
