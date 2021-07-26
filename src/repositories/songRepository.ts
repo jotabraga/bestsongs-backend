@@ -36,7 +36,7 @@ export async function registerSong(song: string, link: string) {
 
 export async function deleteSong(id: string) {
     const sql = `DELETE from songs WHERE id = $1`;
-    await connection.query(sql,[id]);    
+    await connection.query(sql,[parseInt(id)]);    
 }
 
 export async function getLowScoreSongs(){

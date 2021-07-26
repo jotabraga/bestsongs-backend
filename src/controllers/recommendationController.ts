@@ -28,13 +28,17 @@ export async function upvoteSong(req: Request, res: Response){
     try{
         const { id } = req.params;  
         
-        if(!id) {
+        if(!parseInt(id)) {
             return res.sendStatus(400);
         }
    
-        await recommendationService.increaseSongScore(id);
+        const requisition = await recommendationService.increaseSongScore(id);
 
-        res.sendStatus(201);
+        if(requisition === null){
+            res.sendStatus(404);
+        }
+
+        res.sendStatus(200);
         
         } catch (err) {
             console.log(err);
@@ -48,13 +52,17 @@ export async function downvoteSong(req: Request, res: Response){
     try{
         const { id } = req.params;
     
-        if(!id) {
+        if(!parseInt(id)) {
             return res.sendStatus(400);
         }
   
-        await recommendationService.decreaseSongScore(id);
+        const requisition = await recommendationService.decreaseSongScore(id);
 
-        res.sendStatus(201);
+        if(requisition === null){
+            res.sendStatus(404);
+        }
+
+        res.sendStatus(200);
         
         } catch (err) {
             console.log(err);
@@ -97,6 +105,5 @@ export async function getTopListSongs(req: Request, res: Response){
     } catch (err) {
         console.log(err);
         res.sendStatus(500);
-    }
-    
+    }    
 }

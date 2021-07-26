@@ -34,6 +34,7 @@ export async function recommendASong(song: string, link: string) {
 export async function increaseSongScore(id: string) { 
 
     await songRepository.upvoteSong(id);
+    return ("Ok");
 
 }
 
@@ -41,11 +42,13 @@ export async function decreaseSongScore(id: string) {
   
   const existingSong = await songRepository.getSongById(id);
 
-  if (existingSong.rows[0].score <= -4) {
+  if (existingSong.rows[0]?.score <= -4) {
     await songRepository.deleteSong(existingSong.rows[0].id);
+    return true;
 
   } else {
     await songRepository.downvoteSong(id);
+    return true;
   }
 }
 
