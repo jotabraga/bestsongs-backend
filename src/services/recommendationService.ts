@@ -1,5 +1,4 @@
 import * as songRepository from "../repositories/songRepository";
-import { Request } from "express";
 
 type Song = {
   id: number,
