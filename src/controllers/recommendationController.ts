@@ -26,7 +26,7 @@ export async function recommendSong(req: Request, res: Response){
 export async function upvoteSong(req: Request, res: Response){
 
     try{
-        let { id } = req.params;  
+        const { id } = req.params;  
         
         if(!id) {
             return res.sendStatus(400);
@@ -76,6 +76,27 @@ export async function getRandomSong(req: Request, res: Response){
 
 }
 
-export async function getTopListSongs(){
+export async function getTopListSongs(req: Request, res: Response){
+
+    try{
+
+        const { amount } = req.params;
+
+        if(!amount) {
+            return res.sendStatus(400);
+        }
+
+        if(parseInt(amount) <= 0) {
+            return res.sendStatus(400);
+        }
+
+        const topList = await recommendationService.getTopListWithAmount(amount);
+
+        res.send(topList).status(201);
+
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
     
 }
