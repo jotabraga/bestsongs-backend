@@ -53,4 +53,13 @@ export async function getTopSongs(){
     return topSongs.rows;
 }
 
+export async function getTopList(amount: number) {
+
+    const sql = `SELECT * FROM songs 
+                 ORDER BY score DESC LIMIT $1`;
+
+    const result = await connection.query(sql,[amount]);
+    return result.rows.length === 0 ? false : result.rows;    
+}
+
 

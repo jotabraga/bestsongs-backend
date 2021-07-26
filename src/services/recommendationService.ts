@@ -76,18 +76,15 @@ function  pickRandomSong(songs: Song[]) {
     score: songs[aleatoryIndex].score
   }
 
-  return drawnSong;    
+  return drawnSong;  
+  
 }
 
+export async function getTopListWithAmount(amount: string) {
 
-async function getTopListWithAmount(req: Request) {
+  const listLength = parseInt(amount);
+  const topList = await songRepository.getTopList(listLength);  
 
-  const amount = parseInt(req.params.amount);
-  // const orderedRecommendationsWithGenres =
-  //   await getRecommendationsWithGenresUsingSubquery("top", amount);
-  // if (!orderedRecommendationsWithGenres[0]) {
-  //   throw new ErrorWithStatus("smas404");
-  // }
-  // return orderedRecommendationsWithGenres;
+  return topList;
 }
 
