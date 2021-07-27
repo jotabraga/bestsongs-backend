@@ -1,19 +1,20 @@
 import {Request, Response} from "express";
 import * as recommendationService from "../services/recommendationService";
+import { SongData } from "../services/recommendationService";
 
 export async function recommendSong(req: Request, res: Response){
     try{
-        const { song, link } = req.body;
+        const musicInfo: SongData = req.body;
 
-        if(!song || !link) {
+        if(!musicInfo.song || !musicInfo.link) {
             return res.sendStatus(400);
         }
 
-        if(!recommendationService.validateRecommendationData(song, link)){
+        if(!recommendationService.validateRecommendationData(musicInfo)){
             return res.sendStatus(400);
         }
 
-        await recommendationService.recommendASong(song, link);
+        await recommendationService.recommendASong(musicInfo);
 
         res.sendStatus(201);
     
@@ -40,10 +41,10 @@ export async function upvoteSong(req: Request, res: Response){
 
         res.sendStatus(200);
         
-        } catch (err) {
-            console.log(err);
-            res.sendStatus(500);
-        }
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
 
 }
 
@@ -74,20 +75,17 @@ export async function getRandomSong(req: Request, res: Response){
 
     try{
         const randomSong = await recommendationService.getRandomSong();
-
         res.send(randomSong).status(201);
         
-        } catch (err) {
-            console.log(err);
-            res.sendStatus(500);
-        }
-
+    } catch (err) {
+        console.log(err);
+        res.sendStatus(500);
+    }
 }
 
 export async function getTopListSongs(req: Request, res: Response){
 
     try{
-
         const { amount } = req.params;
 
         if(!amount) {
@@ -99,7 +97,6 @@ export async function getTopListSongs(req: Request, res: Response){
         }
 
         const topList = await recommendationService.getTopListWithAmount(amount);
-
         res.send(topList).status(201);
 
     } catch (err) {

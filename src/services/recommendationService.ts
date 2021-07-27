@@ -1,17 +1,22 @@
 import * as songRepository from "../repositories/songRepository";
 
-type Song = {
+interface Song {
   id: number,
   name: string,
   link: string,
   score: number
 }
 
-export async function validateRecommendationData(song: string, link: string) {
+export interface SongData {
+  song: string,
+  link: string
+}
+
+export async function validateRecommendationData(data: SongData) {
 
   var p = /^(?:https?:\/\/)?(?:m\.|www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
 
-  if (link.match(p) && typeof song === "string") {
+  if (data.link.match(p) && typeof data.song === "string") {
     return true;
     
   } else {
@@ -19,15 +24,15 @@ export async function validateRecommendationData(song: string, link: string) {
   }
 }
 
-export async function recommendASong(song: string, link: string) {
+export async function recommendASong(data: SongData) {
     
-  const existingSong = await songRepository.getSongByName(song);
+  const existingSong = await songRepository.getSongByName(data.song);
 
   if (existingSong.rowCount > 0) {
     await songRepository.upvoteSong(existingSong.rows[0].id);
 
   } else {
-    await songRepository.registerSong(song, link);
+    await songRepository.registerSong(data.song, data.link);
   }
 }
 
